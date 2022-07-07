@@ -9,6 +9,7 @@ import (
 )
 
 var db = map[string]string{
+	"Lily": "666",
 	"Tom":  "630",
 	"Jack": "589",
 	"Sam":  "567",
@@ -26,11 +27,11 @@ func createGroup(name string, db map[string]string) *congcache.Group {
 }
 
 func startCacheServer(addr string, addrs []string, gee *congcache.Group) {
-	peers := congcache.NewHTTPPool(addr)
+	peers := congcache.NewPool(addr)
 	peers.Set(addrs...)
 	gee.RegisterPeers(peers)
 	log.Println("congcache is running at", addr)
-	log.Fatal(http.ListenAndServe(addr[7:], peers))
+	peers.Serve()
 }
 
 func startAPIServer(apiAddr string, gee *congcache.Group) {
@@ -60,9 +61,9 @@ func main() {
 
 	apiAddr := "http://localhost:9999"
 	addrMap := map[int]string{
-		8001: "http://localhost:8001",
-		8002: "http://localhost:8002",
-		8003: "http://localhost:8003",
+		8001: "localhost:8001",
+		8002: "localhost:8002",
+		8003: "localhost:8003",
 	}
 
 	var addrs []string
