@@ -80,7 +80,7 @@ func (g *Group) loadOnce(key string) (bv ByteView, err error) {
 				if value, err := g.getFromPeer(peer, key); err == nil {
 					return value, nil
 				}
-				log.Println("[GeeCache] Failed to get from peer", err)
+				log.Println("[CongCache] Failed to get from peer", err)
 			}
 		}
 		return g.getLocally(key)
@@ -90,19 +90,6 @@ func (g *Group) loadOnce(key string) (bv ByteView, err error) {
 	}
 	return
 }
-
-// func (g *Group) load(key string) (ByteView, error) {
-// 	if g.peers != nil {
-// 		if peer, ok := g.peers.PickPeer(key); ok {
-// 			if value, err := g.getFromPeer(peer, key); err == nil {
-// 				return value, nil
-// 			} else {
-// 				log.Println("[GeeCache] Failed to get from peer", err)
-// 			}
-// 		}
-// 	}
-// 	return g.getLocally(key)
-// }
 
 func (g *Group) getFromPeer(peer PeerGetter, key string) (ByteView, error) {
 	req := &pb.Request{
